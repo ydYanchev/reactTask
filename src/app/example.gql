@@ -1,0 +1,17 @@
+query GetAllCarModifications {
+  allCarModifications {
+    id
+    name
+    horsePower
+    weight
+    model {
+      id
+      name
+      brand {
+        id
+        name
+      }
+    }
+  }
+}
+

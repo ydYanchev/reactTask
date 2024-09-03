@@ -1,0 +1,108 @@
+    mutation postCarBrand($name: String!) {
+        createCarBrand(name: $name) {
+            id
+            name
+        }
+    }
+
+    mutation postCarModel($brandId: ID!, $name: String!) {
+        createCarModel(brandId: $brandId, name: $name) {
+            id
+            name
+            brand {
+                id
+                name
+            }
+        }
+    }
+
+    mutation postCarModification($modelId: ID!, $name: String!) {
+        createCarModification(modelId: $modelId, name: $name) {
+            id
+            name
+        }
+     }
+    
+    mutation EditCarBrand($data: CarBrandData!) {
+        editCarBrand(data: $data) {
+            id
+            name
+        }
+    }
+
+    mutation EditCarModel($data: CarModelData!) {
+        editCarModel(data: $data) {
+            id
+        }
+    }
+
+   
+
+    mutation EditCarModification(
+        $id: ID!,
+        $name: String,
+        $coupe: CarCoupe,
+        $horsePower: Int,
+        $weight: Float
+    ) {
+        editCarModification(data: {
+            id: $id,
+            name: $name,
+            coupe: $coupe,
+            horsePower: $horsePower,
+            weight: $weight
+        }) {
+            id
+            name
+            coupe
+            horsePower
+            weight
+            model {
+            id
+            name
+            brand {
+                id
+                name
+            }
+            }
+        }
+    }
+
+
+    mutation deleteCarModification($id: ID!) {
+     deleteCarModification(id: $id)
+    }
+
+
+    mutation deleteCarBrand($id: ID!){
+        deleteCarBrand(id: $id)  
+    }
+
+    mutation deleteCarModel($id: ID!) {
+        deleteCarModel(id: $id)
+    }
+
+    query GetCarModels($brandId: ID!) {
+        carModels(brandId: $brandId) {
+            id
+            name
+        }
+    }
+
+    query GetCarModifications($modelId: ID!) {
+        carModifications(modelId: $modelId) {
+            horsePower
+            id
+            name
+            weight
+                coupe
+        }
+    }
+
+    query GetAllCarBrands {
+        carBrands {
+            id
+            name
+        }
+    }
+
