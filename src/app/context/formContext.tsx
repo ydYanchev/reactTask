@@ -81,10 +81,14 @@ export const FormProvider = ({ children }) => {
         setLoading(true);
         try {
             const response = await GraphQLBackend.postCarBrand({ name: data.name });
-            getBrands();
-            const id = response.createCarBrand.id;
-            const text = response.createCarBrand.name;
-            setSelectedBrand({ id, text });
+
+            const addedBrand = {
+                id: response.createCarBrand.id,
+                name: response.createCarBrand.name
+              };
+            
+              setBrandsArray((prevBrandsArray) => [...prevBrandsArray, addedBrand]);
+              setSelectedBrand({ id:addedBrand.id, text:addedBrand.name });
 
             return { success: true };
 
@@ -97,16 +101,24 @@ export const FormProvider = ({ children }) => {
             }
 
             return { success: false, errors: err.response.errors };
+        }finally{
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     const postModel = async (data) => {
         setLoading(true);
         try {
             const response = await GraphQLBackend.postCarModel({ name: data.name, brandId: selectedBrand.id });
-            getModels(selectedBrand.id);
-            setSelectedModel({ id: response.createCarModel.id, text: response.createCarModel.name });
+
+            const addedModel = {
+                id: response.createCarModel.id,
+                name: response.createCarModel.name
+              };
+            
+              setModelsArray((prevModelsArray) => [...prevModelsArray, addedModel]);
+              setSelectedModel({ id:addedModel.id, text:addedModel.name });
+
             return { success: true };
 
         } catch (err) {
@@ -118,8 +130,9 @@ export const FormProvider = ({ children }) => {
             }
 
             return { success: false, errors: err.response.errors };
+        }finally{
+            setLoading(false);
         }
-        setLoading(false);
 
     };
 
@@ -127,8 +140,15 @@ export const FormProvider = ({ children }) => {
         setLoading(true);
         try {
             const response = await GraphQLBackend.postCarModification({ name: data.name, modelId: selectedModel.id });
-            getModifications(selectedModel.id);
+            
+            let addedModification = {
+                id:response.createCarModification.id,
+                name:response.createCarModification.name
+            }
+
             setSelectedModification({ id: response.createCarModification.id, text: response.createCarModification.name });
+            setModificationsArray((prevModificationsArray) => [...prevModificationsArray, addedModification]);
+
             return { success: true };
 
         } catch (err) {
@@ -140,8 +160,10 @@ export const FormProvider = ({ children }) => {
             }
 
             return { success: false, errors: err.response.errors };
+        }finally{
+            setLoading(false);
+
         }
-        setLoading(false);
 
     };
 
@@ -169,8 +191,10 @@ export const FormProvider = ({ children }) => {
             }
 
             return { success: false, errors: err.response.errors };
+        }finally{
+
+            setLoading(false);
         }
-        setLoading(false);
 
 
     };
@@ -186,7 +210,6 @@ export const FormProvider = ({ children }) => {
             const response = await GraphQLBackend.EditCarModel({ data: CarModelData });
             getModels(selectedBrand.id);
 
-            setSelectedModel({ id: CarModelData.id, text: CarModelData.name });
             return { success: true };
 
         } catch (err) {
@@ -249,12 +272,10 @@ export const FormProvider = ({ children }) => {
                 }
 
                 return { success: false, errors: { general: "An unexpected error occurred" } };
+            }finally{
+                setLoading(false);
             }
         }
-
-
-
-        setLoading(false);
 
     };
 
@@ -278,8 +299,10 @@ export const FormProvider = ({ children }) => {
             }
 
             return { success: false, errors: err.response.errors };
+        }finally{
+            setLoading(false);
         }
-        setLoading(false);
+
 
     };
 
@@ -303,8 +326,9 @@ export const FormProvider = ({ children }) => {
             }
 
             return { success: false, errors: err.response.errors };
+        }finally{
+            setLoading(false);
         }
-        setLoading(false);
 
     };
 
@@ -327,9 +351,11 @@ export const FormProvider = ({ children }) => {
             }
 
             return { success: false, errors: err.response.errors };
+        }finally{
+            setLoading(false);
         }
 
-        setLoading(false);
+
 
     };
 

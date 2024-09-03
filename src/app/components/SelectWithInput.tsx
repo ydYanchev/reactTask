@@ -18,6 +18,7 @@ export default function SelectWithInput(data) {
 
     const toggleVisibility = () => {
         setIsVisible(prev => !prev);
+        setSearchValue('');
     };
 
     const [searchValue, setSearchValue] = useState('');
